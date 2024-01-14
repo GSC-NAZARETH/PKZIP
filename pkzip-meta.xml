@@ -1,0 +1,30 @@
+
+<PKZIP>
+  <METADATA>
+    id=pkzip
+    name="PKZIP handler"
+    verCode=1020033
+    author="NAZARETH@GSC"
+    descriptionShort="pkzip module handler"
+  </METADATA>
+
+  <CONFIG>
+    allow_downgrade=false
+    request_root=false
+  </CONFIG>
+
+  <DESCRIPTION>
+VIEW INSTALL UNINSTALL and CREATE
+termux module packed in pkzip file
+
+just act like a magisk module
+but its only act in termux app
+
+Help usage: pkzip
+  </DESCRIPTION>
+</PKZIP>
+
+
+<SCRIPT>
+
+</SCRIPT>
