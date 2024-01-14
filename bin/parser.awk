@@ -1,43 +1,31 @@
 
 [ -z "$1" ] && exit
 
-file="$1"
+file="$1"; shift
+case "$file" in
+  .) file="$META";;
 shift
 
 awk '
-
-function parse_xml(object,   i) {
+function get_value(object,   i) {
  split(object, objects, "/")
- $0 = FILE
+ arr[2] = FILE
  for( i in objects ) {
-   if( ! objects[i] ) continue
-   FS = "</"objects[i]">"
-   $0 = $0
-   FS = "<"objects[i]">"
-   $0 = $1
-   $0 = $2
+   split(arr[2], arr, "<[/]*" object[i] ">")
  }
 
- if( $0 ) {
-  gsub(/\n[ \t]+/, "\n")
+ if( ($0 = arr[2]) ) {
   gsub(/^\n[ \t]*|\n[ \t]*$/, "")
-  if( (GET = ARGV[++I]) ) {
-    split($0, arr, "\n")
-    for(i in arr)
-     if( index(arr[i], GET"=") ) {
-	GET = arr[i]
-	gsub(/^[^=]*=|["]/, "", GET)
-	print GET
-	break
-     }
-  } else print
+  gsub(/\n[ \t]+/, "\n")
+  print
  }
 }
 
 BEGIN {
  RS = "^$"
- getline FILE < ARGV[++I]
+ getline FILE
+ I = 1
  while( ARGV[++I] )
-  parse_xml(ARGV[I])
+  get_value(ARGV[I])
 }
 ' "$file" "$@"
