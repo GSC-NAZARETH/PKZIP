@@ -257,7 +257,7 @@ else
   read_pkzip_meta_options "$1"
 
   if ${request_root:-false} && ! is_root_mode; then
-    source_list="$PKZIP/source/pk-init.sh" \
+    source_list="$source_list $PKZIP/source/pk-init.sh" \
     exec /sbin/su -c "$0 " "$@" 
   fi
 
@@ -267,8 +267,8 @@ fi
 ' > $launcher
 chmod $mode $launcher
 
-# creating link at home/bin
-unlink $HOME/bin/pkzip
+# Replace link at home/bin (if exist)
+rm -f $HOME/bin/pkzip
 ln -s $launcher $HOME/bin/pkzip
 
 notify_done
@@ -428,6 +428,8 @@ if is_sourced; then
   # cleanup env if sourced
   unset INSTALLDIR PRELOGINFILE INITFILE
   unset -f notify_run notify_done is_sourced
+else
+  echo '  # Restart current Shell or open new instance to use pkzip'
 fi
 
 printf '\n\t<-- Installing Done -->\n'
